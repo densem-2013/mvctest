@@ -1,0 +1,105 @@
+﻿@model IEnumerable<UserManagment.Core.DAL.User>
+
+@{
+    ViewBag.Title = "UsersList";
+}
+
+<h2>UsersList</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Index")
+</p>
+<table id="myTable" class="table table-striped hover">
+    <thead>
+    <tr>
+        <th>№</th>
+        <th>
+            @Html.DisplayNameFor(model => model.UserName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Email)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Avatar)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SkypeLogin)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Login)
+        </th>
+    </tr>
+    </thead>
+    <tbody>
+    @{
+        int i = 0;
+    }
+    @foreach (var item in Model)
+    {
+        i++;
+        <tr class="datarow">
+            <td><span>@i</span>
+                @Html.HiddenFor(x => item.Id, "Value")
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UserName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                <div class="profile">
+                    <div class="profile-avatar-wrap">
+                        <img src="/Avatars/@item.Avatar" width="40" id="profile-avatar" alt="Image for Profile">
+                    </div>
+                </div>
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SkypeLogin)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Login)
+            </td>
+        </tr>
+    }
+
+    </tbody>
+</table>
+@section Scripts {
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="http://cdn.datatables.net/1.10.2/css/jquery.dataTables.min.css">
+    <script type="text/javascript" src="http://cdn.datatables.net/1.10.2/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#myTable').dataTable({
+                'order': [[1, 'asc']],
+                'acColumns': [
+                    { "data": "№" },
+                    { "data": "UserName" },
+                    { "data": "Email" },
+                    { "data": "Avatar" },
+                    { "data": "SkypeLogin" },
+                    { "data": "Login" }
+                ],
+                "info": true,
+                "paging": true
+            });
+
+            $('.datarow').live('click', function(evt) {
+                var userid = $(this).find('td input[type="hidden"]').val();
+                //console.log(userid);
+                window.location.href = "@Url.Action("Update")/"+ userid;
+                //console.log(window.location.href);
+            });
+
+            //$('.datarow').live('mouseover', function(evt) {
+            //    $(this).css({"background-color":"#00ced1"});
+            //});
+            //$('.datarow').live('mouseleave', function (evt) {
+            //    $(this).css({ "background-color": "#ffffff" });
+            //});
+        });
+    </script>
+}
+<!--        -->

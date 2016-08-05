@@ -1,0 +1,15 @@
+C:\Users\Den_and_Anna\Documents\Visual Studio 2013\Projects\UserManagment\UserManagment.Infrastructure\bin\Debug\UserManagment.Infrastructure.dll.config
+C:\Users\Den_and_Anna\Documents\Visual Studio 2013\Projects\UserManagment\UserManagment.Infrastructure\bin\Debug\UserManagment.Infrastructure.dll
+C:\Users\Den_and_Anna\Documents\Visual Studio 2013\Projects\UserManagment\UserManagment.Infrastructure\bin\Debug\UserManagment.Infrastructure.pdb
+C:\Users\Den_and_Anna\Documents\Visual Studio 2013\Projects\UserManagment\UserManagment.Infrastructure\bin\Debug\EntityFramework.dll
+C:\Users\Den_and_Anna\Documents\Visual Studio 2013\Projects\UserManagment\UserManagment.Infrastructure\bin\Debug\EntityFramework.SqlServer.dll
+C:\Users\Den_and_Anna\Documents\Visual Studio 2013\Projects\UserManagment\UserManagment.Infrastructure\bin\Debug\EntityFramework.SqlServerCompact.dll
+C:\Users\Den_and_Anna\Documents\Visual Studio 2013\Projects\UserManagment\UserManagment.Infrastructure\bin\Debug\System.Data.SqlServerCe.dll
+C:\Users\Den_and_Anna\Documents\Visual Studio 2013\Projects\UserManagment\UserManagment.Infrastructure\bin\Debug\UserManagment.Core.dll
+C:\Users\Den_and_Anna\Documents\Visual Studio 2013\Projects\UserManagment\UserManagment.Infrastructure\bin\Debug\UserManagment.Core.pdb
+C:\Users\Den_and_Anna\Documents\Visual Studio 2013\Projects\UserManagment\UserManagment.Infrastructure\bin\Debug\EntityFramework.xml
+C:\Users\Den_and_Anna\Documents\Visual Studio 2013\Projects\UserManagment\UserManagment.Infrastructure\bin\Debug\EntityFramework.SqlServer.xml
+C:\Users\Den_and_Anna\Documents\Visual Studio 2013\Projects\UserManagment\UserManagment.Infrastructure\bin\Debug\EntityFramework.SqlServerCompact.xml
+C:\Users\Den_and_Anna\Documents\Visual Studio 2013\Projects\UserManagment\UserManagment.Infrastructure\obj\Debug\UserManagment.Infrastructure.csprojResolveAssemblyReference.cache
+C:\Users\Den_and_Anna\Documents\Visual Studio 2013\Projects\UserManagment\UserManagment.Infrastructure\obj\Debug\UserManagment.Infrastructure.dll
+C:\Users\Den_and_Anna\Documents\Visual Studio 2013\Projects\UserManagment\UserManagment.Infrastructure\obj\Debug\UserManagment.Infrastructure.pdb

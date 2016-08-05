@@ -1,0 +1,59 @@
+﻿@model UserManagment.Web.Areas.UserControlArea.Models.UserViewModel
+
+@{
+    ViewBag.Title = "AddUser";
+    ViewBag.PageMessage = "Add New User";
+}
+
+<h2>AddUser</h2>
+
+<div class="modal-content">
+    @using (Html.BeginForm("Create", "User", null, FormMethod.Post, new { enctype = "multipart/form-data", @class = "user_form" }))
+    {
+        @Html.AntiForgeryToken()
+        <ul>
+            <li>
+                <h2>@ViewBag.PageMessage</h2>
+                <span class="required_notification">* Denotes Required Field</span>
+            </li>
+            <li>
+                <label for="name">Name:*</label> 
+                @Html.EditorFor(model => model.UserName, new { placeholder = "Your Name", required = "true" })
+                @Html.ValidationMessageFor(model => model.UserName)
+            </li>
+            <li>
+                @Html.LabelFor(model => model.Email, new {@class = "control-label col-md-2"})
+                @Html.EditorFor(model => model.Email)
+                @Html.ValidationMessageFor(model => model.Email)
+            </li>
+            <li>
+                @Html.Label("Avatar", new {@class = "control-label col-md-2"})
+                <input type="file" id="uploader" name="upload"/>
+
+                <div class="profile ">
+                    <div class="profile-avatar-wrap" data-toltip="Select image or drag & drop">
+                        <img src="/Avatars/256.jpg" width="150" id="profile-avatar" alt="Image for Profile">
+                    </div>
+                </div>
+            </li>
+            <li>
+                @Html.LabelFor(model => model.SkypeLogin, new {@class = "control-label col-md-2"})
+                @Html.EditorFor(model => model.SkypeLogin)
+                @Html.ValidationMessageFor(model => model.SkypeLogin)
+            </li>
+            <li>
+                @Html.LabelFor(model => model.Login, new {@class = "control-label col-md-2"})
+                @Html.EditorFor(model => model.Login)
+                @Html.ValidationMessageFor(model => model.Login)
+            </li>
+            <li>
+                 @Html.ActionLink("Back to List", "GetAll",null,new {@class="button"})
+                <input type="submit" value="Create" class="btn btn-default"/>
+            </li>
+        </ul>
+    }
+
+</div>
+@section Scripts {
+        @Scripts.Render("~/bundles/avatar")
+    }
