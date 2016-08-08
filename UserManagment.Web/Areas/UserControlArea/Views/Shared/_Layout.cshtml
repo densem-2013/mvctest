@@ -15,7 +15,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("User Managment", "Index", "Home", null, new { @class = "navbar-brand" })
+                @Html.ActionLink("User Managment", "Index", "User", null, new { @class = "navbar-brand" })
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
@@ -32,9 +32,6 @@
     </div>
 
     @section Scripts { 
-        @Scripts.Render("~/bundles/jquery")
-            @Scripts.Render("~/bundles/bootstrap")
-    @Scripts.Render("~/bundles/jqueryval")
         @Scripts.Render("~/bundles/modernizr")
 
     }

@@ -1,4 +1,4 @@
-﻿@model UserManagment.Web.Areas.UserControlArea.Models.UserViewModel
+﻿@model UserManagment.Core.Models.UserViewModel
 
 @{
     ViewBag.Title = "UserDetails";
@@ -7,55 +7,71 @@
 
 <div class="modal-content">
     <div class="user_form">
-        <ul>
-            <li>
-                <h2>@ViewBag.PageMessage</h2>
-                <span class="required_notification">* Denotes Required Field</span>
-            </li>
-            <li>
-                 @Html.HiddenFor(x => x.Id, "Value")
-                <label for="name">Name:*</label>
-                <input id="name" type="text" placeholder="Your Name" value="@Model.UserName" required/>
-            </li>
-            <li>
-                <label for="email">Email:*</label>
-                <input type="email" name="email" value="@Model.Email" placeholder="email@example.com" pattern="[a-z0-9!#$%&'+/=?^_`{|}~.-]+&#64;[a-z0-9-]+(\.[a-z0-9-]+)" required />
-                <span class="form_hint">Proper format "name@something.com"</span>
-            </li>
-            <li>
-                <label for="skypelogin">Skype Login:</label>
-                <input type="text" name="skypelogin" value="@Model.SkypeLogin" placeholder="login.login" pattern="[a-zA-Z][a-zA-Z0-9_\-\,\.]{5,31}" />
-                <span class="form_hint">Proper format "login.login or login"</span>
-            </li>
-            <li>
-                <label for="login">Your Login:</label>
-                <input type="text" name="login" value="@Model.Login" placeholder="login" pattern="\w{5,20}" />
-                <span class="form_hint">Proper format "*****(5-20 symbols)"</span>
-            </li>
-            <li>
-                @Html.Label("Avatar", new { @class = "control-label col-md-2" })
-                <div class="form-group">
-                    
-                    <input type="file" id="uploader" name="upload" multiple />
-                    <img src="/Avatars/@Model.Avatar" width="150" id="profile-avatar" alt="Image for Profile">
-                </div>
-            </li>
-            <li>
-                <div style="display: inline-flex">
-                    <a class="button" href="@Url.Action("GetAll")">Go to list</a>
-                    <a class="btn btn-danger"  href="@Url.Action("Delete")/@Model.Id">Delete</a>
-                </div>
-             </li>
-        </ul>
+        @using (Html.BeginForm("Delete", "User", FormMethod.Post, new { id = "detailsform", enctype = "multipart/form-data" }))
+             {
+                @Html.AntiForgeryToken()
+                 <ul>
+                     <li>
+                         <h2>@ViewBag.PageMessage</h2>
+                         <span class="required_notification">* Denotes Required Field</span>
+                     </li>
+                     <li>
+                         @Html.HiddenFor(model => model.Id, "Value")
+                         <label for="UserName">Name:*</label>
+                         <input id="UserName" name="UserName" type="text" min="6" placeholder="Your Name" value="@Model.UserName" pattern=".{0}|.{6,}" required title="Either 0 OR (6 chars minimum)" />
+                     </li>
+                     <li>
+                         <label for="Email">Email:*</label>
+                         <input type="email" name="Email" id="Email" value="@Model.Email"  placeholder="email@example.com" pattern="[a-z0-9!#$%&'+/=?^_`{|}~.-]+&#64;[a-z0-9-]+(\.[a-z0-9-]+)" required  />
+                         <span id="hint" class="form_hint">Proper format "name@something.com"</span>
+                         <span class="email_remote"></span>
+
+                     </li>
+                     <li>
+                         <label for="SkypeLogin">Skype Login:</label>
+                         <input type="text" name="SkypeLogin" value="@Model.SkypeLogin" placeholder="login.login" pattern="[a-zA-Z][a-zA-Z0-9_\-\,\.]{5,31}" />
+                         <span class="form_hint">Proper format "login.login or login"</span>
+                     </li>
+                     <li>
+                         <label for="Login">Your Login:</label>
+                         <input type="text" name="Login" value="@Model.Login" placeholder="login" pattern="\w{5,20}" />
+                         <span class="form_hint">Proper format "*****(5-20 symbols)"</span>
+                     </li>
+                     <li>
+                         @Html.Label("Avatar", new {@class = "control-label col-md-2"})
+                         <div class="form-group">
+
+                             <input type="file" id="uploader" name="uploader" multiple/>
+                             <img src="/Avatars/@Model.Avatar" width="150" id="profile-avatar" alt="Image for Profile">
+                         </div>
+                     </li>
+                     <li>
+                         <div style="display: inline-flex">
+                             <a class="button" href="@Url.Action("GetAll")">Go to list</a>
+                             <input type="submit" class="button_red" value="Delete" />
+                         </div>
+                     </li>
+                 </ul>
+             }
     </div>
 </div>
 @section Scripts {
     @Scripts.Render("~/bundles/avatar")
     <script type="text/javascript">
 
-        $(function() {
+
+        $(function () {
+
+            $("<span>").insertAfter(".user_form li:first-child() h2")
+                .attr("id", "updone")
+                .css("display", "none")
+                .text("Value changed!");
+            $("<span>").insertAfter(".user_form li:first-child() h2")
+                .attr("id", "remerror")
+                .css({ "display": "none", "color": "red", "padding": "20px", "font": "16px sans-serif bold" })
+                .text("Error!");
+
             Object.observe(window.app.Avatar.settings, function (changes) {
-                console.log(changes[0]);
                 if (changes[0].name === "filename") {
                     var formdata = new FormData(); //FormData object
                     var fileInput = document.getElementById('uploader');
@@ -66,16 +82,91 @@
                     }
                     //Creating an XMLHttpRequest and sending
                     var xhr = new XMLHttpRequest();
-                    xhr.open('POST', "/UserControlArea/User/UpdateAvatar/@Model.Id");
+                    var nyu = $("#Id").val();
+                    xhr.open('POST', "/UserControlArea/User/UpdateAvatar/" + $("#Id").val());
                     xhr.send(formdata);
                     xhr.onreadystatechange = function () {
                         if (xhr.readyState == 4 && xhr.status == 200) {
-                            //alert(xhr.responseText);
                             $("#uploader").addClass("avaupdated");
+                            $("#updone").fadeIn(500).fadeOut(500);
                         }
                     }
                 }
             });
+
+            $("input").not(':input[type=button],:input[type=submit], :input[type=file]')
+                .each(function () {
+                    var elem = $(this);
+
+                    // Save current value of element
+                    elem.data('oldVal', elem.val());
+
+                    // Look for changes in the value
+                    elem.bind("propertychange change click keyup input paste", function (event) {
+
+                        $("#hint").css({ "display": "none" });
+                        // If value has changed...
+                        if (elem.data('oldVal') !== elem.val()) {
+                            // Updated stored value
+                            elem.data('oldVal', elem.val());
+
+                            console.log(elem.data());
+
+                            if (this.checkValidity()) {
+                                if (this.name === "Email") {
+                                    $.ajax({
+                                        url: "/UserControlArea/User/VerifyEmail",
+                                        type: 'post',
+                                        data: { id: $("#Id").val(), email: this.value },
+                                        success: function (data) {
+                                            if (data !== false) {
+                                                var upobj = {
+                                                    Id: $("#Id").val(),
+                                                    Field: elem.attr("name"),
+                                                    NewValue: elem.val()
+                                                }
+
+                                                $.ajax({
+                                                    url: "/UserControlArea/User/UpdateFeild",
+                                                    type: 'post',
+                                                    data: upobj,
+                                                    success: function () {
+                                                        document.getElementById("Email").validity.valid = true;
+                                                        $(".email_remote").css({ "display": "none" });
+                                                        $("#updone").fadeIn(500).fadeOut(500);
+                                                    }
+                                                });
+                                            } else {
+                                                document.getElementById("Email").validity.valid = false;
+                                                $("#hint").css({ "display": "none" });
+                                                $(".email_remote").css({ "display": "inline" }).text("email " + $("#Email").val() + " already exists in the database !");
+                                                $("#remerror").fadeIn(5000).fadeOut(500);
+                                            }
+                                        }
+                                    });
+                                }
+                                else {
+                                    var upobj = {
+                                        Id: $("#Id").attr("value"),
+                                        Field: elem.attr("name"),
+                                        NewValue: elem.val()
+                                    }
+
+                                    $.ajax({
+                                        url: "/UserControlArea/User/UpdateFeild",
+                                        type: 'post',
+                                        data: upobj,
+                                        success: function (data) {
+                                            elem.data('rest', false);
+                                            $("#updone").fadeIn(500).fadeOut(500);
+                                        }
+                                    });
+                                }
+                            };
+                        }
+                    });
+
+                });
         });
     </script>
 }

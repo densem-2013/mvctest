@@ -1,59 +1,110 @@
-﻿@model UserManagment.Web.Areas.UserControlArea.Models.UserViewModel
+﻿@model UserManagment.Core.Models.UserViewModel
 
 @{
     ViewBag.Title = "AddUser";
     ViewBag.PageMessage = "Add New User";
 }
-
-<h2>AddUser</h2>
-
 <div class="modal-content">
-    @using (Html.BeginForm("Create", "User", null, FormMethod.Post, new { enctype = "multipart/form-data", @class = "user_form" }))
-    {
-        @Html.AntiForgeryToken()
-        <ul>
-            <li>
-                <h2>@ViewBag.PageMessage</h2>
-                <span class="required_notification">* Denotes Required Field</span>
-            </li>
-            <li>
-                <label for="name">Name:*</label> 
-                @Html.EditorFor(model => model.UserName, new { placeholder = "Your Name", required = "true" })
-                @Html.ValidationMessageFor(model => model.UserName)
-            </li>
-            <li>
-                @Html.LabelFor(model => model.Email, new {@class = "control-label col-md-2"})
-                @Html.EditorFor(model => model.Email)
-                @Html.ValidationMessageFor(model => model.Email)
-            </li>
-            <li>
-                @Html.Label("Avatar", new {@class = "control-label col-md-2"})
-                <input type="file" id="uploader" name="upload"/>
-
-                <div class="profile ">
-                    <div class="profile-avatar-wrap" data-toltip="Select image or drag & drop">
-                        <img src="/Avatars/256.jpg" width="150" id="profile-avatar" alt="Image for Profile">
+    <div class="user_form">
+        @using (Html.BeginForm("Create", "User", FormMethod.Post,new { id="createform",enctype = "multipart/form-data" }))
+        {
+            @Html.AntiForgeryToken()
+            <ul>
+                <li>
+                    <h2>@ViewBag.PageMessage</h2>
+                    <span class="required_notification">* Denotes Required Field</span>
+                </li>
+                <li>
+                    <label for="username">Name:*</label>
+                    <input name="username" type="text" placeholder="Your Name" pattern=".{0}|.{6,}" required title="Either 0 OR (6 chars minimum)" value="@Model.UserName" />
+                </li>
+                <li>
+                    <label for="email">Email:*</label>
+                    <input type="email" name="email" id="Email" value="@Model.Email" placeholder="email@example.com" pattern="[a-z0-9!#$%&'+/=?^_`{|}~.-]+&#64;[a-z0-9-]+(\.[a-z0-9-]+)" required />
+                    <span class="form_hint">Proper format "name@something.com"</span>
+                    <span class="email_remote"></span>
+                </li>
+                <li>
+                    <label for="skypelogin">Skype Login:</label>
+                    <input type="text" name="skypelogin" value="@Model.SkypeLogin" placeholder="login.login" pattern="[a-zA-Z][a-zA-Z0-9_\-\,\.]{5,31}" />
+                    <span class="form_hint">Proper format "login.login or login"</span>
+                </li>
+                <li>
+                    <label for="login">Your Login:</label>
+                    <input type="text" name="login" value="@Model.Login" placeholder="login" pattern="\w{5,20}" />
+                    <span class="form_hint">Proper format "*****(5-20 symbols)"</span>
+                </li>
+                <li>
+                    @Html.Label("Avatar", new { @class = "control-label col-md-2" })
+                    <div class="form-group">
+                        <input type="file" id="uploader" name="uploader" multiple />
+                        <img src="/Avatars/@Model.Avatar" width="150" id="profile-avatar" alt="Image for Profile">
                     </div>
-                </div>
-            </li>
-            <li>
-                @Html.LabelFor(model => model.SkypeLogin, new {@class = "control-label col-md-2"})
-                @Html.EditorFor(model => model.SkypeLogin)
-                @Html.ValidationMessageFor(model => model.SkypeLogin)
-            </li>
-            <li>
-                @Html.LabelFor(model => model.Login, new {@class = "control-label col-md-2"})
-                @Html.EditorFor(model => model.Login)
-                @Html.ValidationMessageFor(model => model.Login)
-            </li>
-            <li>
-                 @Html.ActionLink("Back to List", "GetAll",null,new {@class="button"})
-                <input type="submit" value="Create" class="btn btn-default"/>
-            </li>
-        </ul>
-    }
-
+                </li>
+                <li>
+                    <div style="display: inline-flex">
+                        <a class="button" href="@Url.Action("GetAll")">Go to list</a>
+                        <input type="submit" class="button_yellow" value="Create" />
+                    </div>
+                </li>
+            </ul>
+        }
+    </div>
 </div>
 @section Scripts {
-        @Scripts.Render("~/bundles/avatar")
-    }
+    @Scripts.Render("~/bundles/avatar")
+    <script type="text/javascript">
+        var remoteexists = false;
+        $("input[type=email]")
+            .each(function () {
+                var elem = $(this);
+
+                // Save current value of element
+                elem.data('oldVal', elem.val());
+
+                // Look for changes in the value
+                elem.bind("propertychange change click keyup input paste", function (event) {
+
+                    $("#hint").css({ "display": "none" });
+                    // If value has changed...
+                    if (elem.data('oldVal') !== elem.val()) {
+                        // Updated stored value
+                        elem.data('oldVal', elem.val());
+                       
+                        if (this.checkValidity()) {
+                            $.ajax({
+                                url: "/UserControlArea/User/VerifyEmail",
+                                type: 'post',
+                                data: {  email: this.value },
+                                success: function (data) {
+                                    if (data !== false) {
+
+                                        document.getElementById("Email").validity.valid = true;
+                                        remoteexists = false;
+                                        $(".email_remote").css({ "display": "none" });
+
+                                    } else {
+                                        document.getElementById("Email").validity.valid = false;
+                                        $("#hint").css({ "display": "none" });
+                                        $(".email_remote").css({ "display": "inline" }).text("email " + $("#Email").val() + " already exists in the database !");
+                                        remoteexists = true;
+                                    }
+                                }
+                            });
+                           
+                        };
+                    }
+                });
+
+            });
+        $("#createform").submit(function (e) {
+            var validationFailure = remoteexists;
+            // do your validation here ...
+            if (validationFailure) {
+                $("#Email").focus();
+                e.preventDefault();
+                return false;
+            }
+        });
+    </script>
+}

@@ -14,7 +14,7 @@ namespace UserManagment.Web.Models
 
         static AppContext()
         {
-            Database.SetInitializer<AppContext>(new AppDbInitializer());
+            Database.SetInitializer(new AppDbInitializer());
         }
         public DbSet<User> Users { get; set; } 
     }

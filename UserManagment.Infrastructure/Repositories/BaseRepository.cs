@@ -113,7 +113,7 @@ namespace UserManagment.Infrastructure.Repositories
             try
             {
                 Context.Entry(entity).State = EntityState.Deleted;
-                _dbSet.Attach(entity);
+
                 opStatus.Status = Context.SaveChanges() > 0;
             }
             catch (Exception exp)

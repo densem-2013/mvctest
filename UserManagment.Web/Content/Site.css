@@ -47,7 +47,7 @@ input.input-validation-error {
 /* === Form Typography === */
 body {font: 14px/21px "Lucida Sans", "Lucida Grande", "Lucida Sans Unicode", sans-serif;}
 .user_form h2, .user_form label {font-family:Georgia, Times, "Times New Roman", serif;}
-.form_hint, .required_notification {font-size: 11px;}
+.form_hint, .email_remote, .required_notification {font-size: 11px;}
 
 /* === List Styles === */
 .user_form ul {   
@@ -86,7 +86,7 @@ body {font: 14px/21px "Lucida Sans", "Lucida Grande", "Lucida Sans Unicode", san
 	float:left;
 	padding:3px;
 }
-.user_form input:not(#uploader) {
+.user_form input:not(#uploader):not(.button_yellow) {
 	height:30px; 
 	width:220px; 
 	padding:5px 8px;
@@ -95,7 +95,7 @@ body {font: 14px/21px "Lucida Sans", "Lucida Grande", "Lucida Sans Unicode", san
 .user_form button {margin-left:156px;}
 
 	/* form element visual styles */
-	.user_form input, .user_form textarea { 
+	.user_form input:not(.button_yellow), .user_form textarea { 
 		border:1px solid #aaa;
 		box-shadow: 0px 0px 3px #ccc, 0 10px 15px #eee inset;
 		border-radius:2px;
@@ -128,7 +128,7 @@ body {font: 14px/21px "Lucida Sans", "Lucida Grande", "Lucida Sans Unicode", san
 }
 
 /* === Form hints === */
-.form_hint {
+.form_hint, .email_remote {
 	background: #d45252;
 	border-radius: 3px 3px 3px 3px;
 	color: white;
@@ -138,16 +138,16 @@ body {font: 14px/21px "Lucida Sans", "Lucida Grande", "Lucida Sans Unicode", san
 	position: absolute; /* allows proper formatting if hint is two lines */
 	display: none;
 }
-.form_hint::before {
+.form_hint::before , .email_remote::before{
 	content: "\25C0";
 	color:#d45252;
 	position: absolute;
 	top:1px;
 	left:-6px;
 }
-.user_form input:focus + .form_hint {display: inline;}
-.user_form input:required:valid + .form_hint {background: #28921f;}
-.user_form input:required:valid + .form_hint::before {color:#28921f;}
+.user_form input:focus + .form_hint, .user_form input:focus + .email_remote {display: inline-block;}
+.user_form input:required:valid + .form_hint,.user_form input:required:valid + .email_remote {background: #28921f;}
+.user_form input:required:valid + .form_hint::before,.user_form input:required:valid + .email_remote::before {color:#28921f;}
 	
 /* === Button Style === */
 a.button {
@@ -178,11 +178,11 @@ a.button {
     text-shadow: 0 -1px 0 #396715;
 }
 
-a.button,a.btn{
+a.button,a.btn,.button_yellow,.button_red{
     margin: 10px;
     }
 
-a.button:hover {
+a.button:hover,.button_yellow:hover,.button_red:hover {
     -ms-opacity:.85;
     opacity:.85;
 	cursor: pointer;
@@ -202,20 +202,118 @@ a.button:active {
     box-shadow: 0 0 10px 5px #356b0b inset;
 }
 
-.modal-content {
+.modal-content:not(#userlist) {
     width: 50em;
     position: absolute;
     left: 30%;
     top: 10%;
+}
+#userlist {
+    width: 100em;
+    position: absolute;
+    left: 15%;
+    top: 10%;
+    padding: 10px;
 }
 /* Some basic styling to notify users
    about the tooltips*/
    .table-hover > tbody > tr:hover > td, .table-hover > tbody > tr:hover > th {
     background-color: #F3D2D2;
 }
-.avaupdated{
+.avaupdated {
     background: #fff url(/Content/images/valid.png) no-repeat 98% center;
-	box-shadow: 0 0 5px #5cd053;
+    -webkit-box-shadow: 0 0 5px #5cd053;
+    -ms-box-shadow: 0 0 5px #5cd053;
+    box-shadow: 0 0 5px #5cd053;
 	border-color: #28921f;
+}
+.button_yellow {
+    
+    background-color: #fac644;
+	background: -webkit-gradient(linear, left top, left bottom, from(#fac644), to(#e8a723));
+	background: -webkit-linear-gradient(top, #fac644, #e8a723);
+	background: -moz-linear-gradient(top, #fac644, #e8a723);
+	background: -ms-linear-gradient(top, #fac644, #e8a723);
+	background: -o-linear-gradient(top, #fac644, #e8a723);
+	background: linear-gradient(top, #fac644, #e8a723);
+	border: 1px solid #a67c1d;
+	border-bottom: 1px solid #997c2b;
+    -webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	-ms-border-radius: 3px;
+	-o-border-radius: 3px;
+    border-radius: 3px;
+    -webkit-box-shadow: 0 1px 0 0 #d5d074 inset ;
+	-moz-box-shadow: 0 1px 0 0 #d5d074 inset;
+	-ms-box-shadow: 0 1px 0 0 #d5d074 inset;
+	-o-box-shadow: 0 1px 0 0 #d5d074 inset;
+    box-shadow: inset 0 1px 0 0 #d5d074;
+    color: rgb(246, 67, 67);
+	font-weight: bold;
+	padding: 6px 20px;
+	text-align: center;
+    -ms-text-shadow: 0 -1px 0 #675915;
+    text-shadow: 0 -1px 0 #675915;
+}
 
+.button_yellow:active {
+    border: 1px solid #f4ca2f;
+    -webkit-box-shadow:0 0 10px 5px #f4ca2f inset ;
+	-moz-box-shadow: 0 0 10px 5px #f4ca2f inset;
+	-ms-box-shadow: 0 0 10px 5px #f4ca2f inset;
+	-o-box-shadow: 0 0 10px 5px #f4ca2f inset;
+    box-shadow: 0 0 10px 5px #f4ca2f inset;
+}
+.form-group img {
+    margin: 10px !important;
+}
+
+.button_red{
+    
+    background-color: #fa4451;
+	background: -webkit-gradient(linear, left top, left bottom, from(#fa4451), to(#e82331));
+	background: -webkit-linear-gradient(top, #fa4451, #e82331);
+	background: -moz-linear-gradient(top, #fa4451, #e82331);
+	background: -ms-linear-gradient(top, #fa4451, #e82331);
+	background: -o-linear-gradient(top, #fa4451, #e82331);
+	background: linear-gradient(top, #fa4451, #e82331);
+	border: 1px solid #a61d2a;
+	border-bottom: 1px solid #992b33;
+    -webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	-ms-border-radius: 3px;
+	-o-border-radius: 3px;
+    border-radius: 3px;
+    -webkit-box-shadow: 0 1px 0 0 #d57478 inset ;
+	-moz-box-shadow: 0 1px 0 0 #d57478 inset;
+	-ms-box-shadow: 0 1px 0 0 #d57478 inset;
+	-o-box-shadow: 0 1px 0 0 #d57478 inset;
+    box-shadow: inset 0 1px 0 0 #d57478;
+    color: rgb(98, 10, 10);
+	font-weight: bold;
+	padding: 6px 20px;
+	text-align: center;
+    -ms-text-shadow: 0 -1px 0 #67151d;
+    text-shadow: 0 -1px 0 #67151d;
+}
+
+.button_red:active {
+    border: 1px solid #f42f3d;
+    -webkit-box-shadow:0 0 10px 5px #f42f3d inset ;
+	-moz-box-shadow: 0 0 10px 5px #f42f3d inset;
+	-ms-box-shadow: 0 0 10px 5px #f42f3d inset;
+	-o-box-shadow: 0 0 10px 5px #f42f3d inset;
+    box-shadow: 0 0 10px 5px #f42f3d inset;
+}
+#updone{
+    color: #5CD053 !important;
+    padding: 30px !important;
+    font-size: 18px !important;
+    font-weight: bold !important;
+}
+.email_remote remote_valid {
+    
+}
+.email_remote remote_novalid {
+    
 }
