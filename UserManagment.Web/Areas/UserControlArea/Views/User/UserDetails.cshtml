@@ -18,7 +18,7 @@
                      <li>
                          @Html.HiddenFor(model => model.Id, "Value")
                          <label for="UserName">Name:*</label>
-                         <input id="UserName" name="UserName" type="text" min="6" placeholder="Your Name" value="@Model.UserName" pattern=".{0}|.{6,}" required title="Either 0 OR (6 chars minimum)" />
+                         <input id="UserName" name="UserName" type="text" placeholder="Your Name" value="@Model.UserName" pattern=".{0}|.{6,}" required title="Either 0 OR (6 chars minimum)" />
                      </li>
                      <li>
                          <label for="Email">Email:*</label>
